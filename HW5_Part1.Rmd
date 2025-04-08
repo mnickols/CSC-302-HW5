@@ -1,0 +1,46 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+Question 1
+Part A
+```{r}
+library(ggplot2)
+library(lubridate)
+load("C:/Users/Matthew/OneDrive - Umich/Documents/GitHub/CSC-302-HW5/house_prices.rda")
+ggplot(house_prices, aes(x = date, y = house_price_index)) +
+  geom_line() +
+  facet_wrap(~state, scales = "free_y") + 
+  scale_x_date(breaks = ymd(c("1980-01-01", "2000-01-01", "2020-01-01")), labels = c("'80", "'00", "'20"))
+```
+Part B
+```{r}
+library(tidyr)
+house_prices %>% gather(key = measure, value = value, -c(date, state, house_price_perc)) -> house_reshaped
+
+head(house_reshaped)
+```
+Part C
+```{r}
+ggplot(house_reshaped, aes(x = date, y = value, color = measure, group = measure)) +
+  geom_line() +
+  facet_wrap(~state, scales = "free_y") + 
+  scale_x_date(breaks = ymd(c("1980-01-01", "2000-01-01", "2020-01-01")), labels = c("'80", "'00", "'20")) +
+  theme_minimal()
+```
+#I don't think this graph shows both pieces of information well. It is hard to tell what the unemployment percentage is because we are comparing it to a value so much larger. 
+
+
+Question 2
+```{r}
+house_prices%>%gather(key=measure, value=value, -c(house_price_index, date, state))->house_reshaped
+
+ggplot(house_reshaped, aes(x = date, y = value, color = measure, group = measure)) +
+  geom_line() +
+  facet_wrap(~state, scales = "free_y") + 
+  scale_x_date(breaks = ymd(c("1980-01-01", "2000-01-01", "2020-01-01")), labels = c("'80", "'00", "'20")) +
+  theme_minimal()
+```
